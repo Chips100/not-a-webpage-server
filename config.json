@@ -1,0 +1,4 @@
+{
+    "pfxFile": "./ssl.pfx",
+    "pfxPassphrase": "[PassPhrase for PFX file]"
+}
