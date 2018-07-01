@@ -11,10 +11,11 @@ First, install Node.js with ChakraCore on the Windows 10 IOT device (in my case,
 Run `npm run build` to compile the sources to the _dist_ subfolder. Copy those files *as well as the node_modules* folder to the device. You can now start the server by calling node with the _main.js_ file.
 
 ### Configure firewall
-It might be necessary to open the port of the server in the firewall configuration. This can be done with the following Powershell command:
+It might be necessary to open the ports of the server in the firewall configuration. This can be done with the following Powershell commands:
 
 ```cmd
 netsh advfirewall firewall add rule name="Open Port 80" dir=in action=allow protocol=TCP localport=80
+netsh advfirewall firewall add rule name="Open Port 443" dir=in action=allow protocol=TCP localport=443
 ```
 
 ### Configure as startup task
