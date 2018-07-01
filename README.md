@@ -16,3 +16,17 @@ It might be necessary to open the port of the server in the firewall configurati
 ```cmd
 netsh advfirewall firewall add rule name="Open Port 80" dir=in action=allow protocol=TCP localport=80
 ```
+
+### Configure as startup task
+To start the server on startup of the device, you can create a scheduled task. To ensure the correct working folder when run as a scheduled task, you can use a batch file like the following:
+
+```cmd
+cd "[FULL PATH TO FOLDER CONTAINING main.js]"
+[FULL PATH TO node.exe] main.js
+```
+
+Next, to create the scheduled task, the previously created batch can be referenced:
+
+```cmd
+SCHTASKS /Create /SC ONSTART /TN WebServer /TR "[FULL PATH TO BAT]" /RU SYSTEM
+```
