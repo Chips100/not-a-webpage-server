@@ -1,4 +1,5 @@
 {
     "pfxFile": "./ssl.pfx",
-    "pfxPassphrase": "[PassPhrase for PFX file]"
+    "pfxPassphrase": "[PassPhrase for PFX file]",
+    "useHttps": false
 }

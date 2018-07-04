@@ -18,6 +18,11 @@ export class Configuration {
     public readonly pfxPassphrase: string;
 
     /**
+     * True, if the Server should use HTTPS; otherwise false.
+     */
+    public readonly useHttps: boolean;
+
+    /**
      * Reads the configuration from the specified file.
      * @param configFile File to read the configuration from.
      */
