@@ -23,6 +23,21 @@ export class Configuration {
     public readonly useHttps: boolean;
 
     /**
+     * Logging configuration.
+     */
+    public readonly logging: {
+        /**
+         * True, if logs should be written to the database.
+         */
+        useDb: boolean;
+
+        /**
+         * True, if logs should be written to the console.
+         */
+        useConsole: boolean;
+    };
+
+    /**
      * Reads the configuration from the specified file.
      * @param configFile File to read the configuration from.
      */

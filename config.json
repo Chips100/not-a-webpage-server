@@ -1,5 +1,9 @@
 {
     "pfxFile": "./ssl.pfx",
     "pfxPassphrase": "[PassPhrase for PFX file]",
-    "useHttps": false
+    "useHttps": false,
+    "logging": {
+        "useDb": true,
+        "useConsole": true
+    }
 }

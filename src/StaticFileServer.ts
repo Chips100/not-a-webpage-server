@@ -5,39 +5,47 @@ import serveStatic = require('serve-static');
 import * as express from "express-serve-static-core";
 import { httpToHttpsRedirectHandle } from './handles/httpToHttpsRedirectHandle';
 import { Ports } from './Ports';
+import { Logger } from './logging/logger';
 
 /**
  * Serves static files from a directory.
  */
-export module StaticFileServer {
+export class StaticFileServer {
+    /**
+     * Creates a StaticFileServer.
+     * @param serveDirectory Directory to serve files from.
+     * @param logger Logger for writing log messages.
+     */
+    public constructor(
+        private serveDirectory: string, 
+        private logger: Logger) { }
+
     /**
      * Serves static files for the specified directory via HTTP.
-     * @param serveDirectory Directory to serve files from.
      */
-    export function serveHttp(serveDirectory: string) {
-        connect().use(serveStaticWithFallbackToRoot(serveDirectory)).listen(Ports.HTTP, () => {
-            console.log(`Serving files from directory '${serveDirectory}' on port ${Ports.HTTP}.`);
+    public serveHttp(): void {
+        connect().use(this.serveStaticWithFallbackToRoot(this.serveDirectory)).listen(Ports.HTTP, () => {
+            this.logger.write(`Serving files from directory '${this.serveDirectory}' on port ${Ports.HTTP}.`);
         });
     }
 
     /**
      * Serves static files for the specified directory via HTTPS.
      * HTTP requests will automatically be redirected to HTTPS.
-     * @param serveDirectory Directory to serve files from.
      * @param pxfFile Path to the PFX file with the SSL certificate.
      * @param pfxPassPhrase Passphrase that the PFX file is protected with.
      */
-    export function serveHttps(serveDirectory: string, pxfFile: string, pfxPassPhrase: string) {
+    public serveHttps(pxfFile: string, pfxPassPhrase: string) {
         https.createServer({
             pfx: fs.readFileSync(pxfFile),
             passphrase: pfxPassPhrase
-        }, serveStaticWithFallbackToRoot(serveDirectory)).listen(Ports.HTTPS, () => {
-            console.log(`Serving files from directory '${serveDirectory}' on port ${Ports.HTTPS}.`);
+        }, this.serveStaticWithFallbackToRoot(this.serveDirectory)).listen(Ports.HTTPS, () => {
+            this.logger.write(`Serving files from directory '${this.serveDirectory}' on port ${Ports.HTTPS}.`);
         });
 
         // Redirect all non-HTTPS requests to the HTTPS version.
         connect().use(httpToHttpsRedirectHandle).listen(Ports.HTTP, () => {
-            console.log(`Redirecting to https on port ${Ports.HTTP}.`)
+            this.logger.write(`Redirecting to https on port ${Ports.HTTP}.`)
         });
     }
 
@@ -46,7 +54,7 @@ export module StaticFileServer {
      * falling back to the root Url '/' if the requested file could not be found (NOT redirecting).
      * @param serveDirectory Directory to serve files from.
      */
-    function serveStaticWithFallbackToRoot(serveDirectory: string): connect.Server {
+    private serveStaticWithFallbackToRoot(serveDirectory: string): connect.Server {
         const serveStaticHandler = serveStatic(serveDirectory);
         const fallbackToDefaultHandler: express.RequestHandler = (req, res, next) => {
             req.url = '/';
