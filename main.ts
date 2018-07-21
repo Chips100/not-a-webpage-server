@@ -9,7 +9,7 @@ import { CompositeLogger } from './src/logging/composite.logger';
 import { DbRepository } from './src/repositories/db.repository';
 
 const configuration = Configuration.read('./config.json');
-const repository = new SqliteRepository(`C:\\temp\\mydb.sqlite`);
+const repository = new SqliteRepository(configuration.repository.sqliteFilename);
 const logger = createLogger(configuration, repository);
 const staticFileServer = new StaticFileServer(path.join(__dirname, 'wwwroot'), logger);
 

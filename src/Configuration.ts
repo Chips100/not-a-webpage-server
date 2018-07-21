@@ -38,6 +38,16 @@ export class Configuration {
     };
 
     /**
+     * Configuration for persistent storage.
+     */
+    public readonly repository: {
+        /**
+         * File name to use for connecting to an sqlite database.
+         */
+        sqliteFilename: string;
+    };
+
+    /**
      * Reads the configuration from the specified file.
      * @param configFile File to read the configuration from.
      */
