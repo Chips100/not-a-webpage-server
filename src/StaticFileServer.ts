@@ -6,6 +6,7 @@ import * as express from "express-serve-static-core";
 import { httpToHttpsRedirectHandle } from './handles/httpToHttpsRedirectHandle';
 import { Ports } from './Ports';
 import { Logger } from './logging/logger';
+import { logRequestHandle } from './handles/logRequestHandle';
 
 /**
  * Serves static files from a directory.
@@ -44,7 +45,7 @@ export class StaticFileServer {
         });
 
         // Redirect all non-HTTPS requests to the HTTPS version.
-        connect().use(httpToHttpsRedirectHandle).listen(Ports.HTTP, () => {
+        connect().use(logRequestHandle(this.logger)).use(httpToHttpsRedirectHandle).listen(Ports.HTTP, () => {
             this.logger.write(`Redirecting to https on port ${Ports.HTTP}.`)
         });
     }
@@ -63,6 +64,6 @@ export class StaticFileServer {
 
         // First Middleware is the built-in serveStatic handler.
         // If the file is not found, try the built-in handler again with the root url.
-        return connect().use(serveStaticHandler).use(fallbackToDefaultHandler);
+        return connect().use(logRequestHandle(this.logger)).use(serveStaticHandler).use(fallbackToDefaultHandler);
     }
 }
