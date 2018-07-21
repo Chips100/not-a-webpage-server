@@ -4,7 +4,8 @@
     "useHttps": false,
     "logging": {
         "useDb": true,
-        "useConsole": true
+        "useConsole": true,
+        "useFile": "C:\\temp\\log.txt"
     },
     "repository": {
         "sqliteFilename": "C:\\temp\\db.sqlite"

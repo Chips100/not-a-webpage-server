@@ -35,6 +35,11 @@ export class Configuration {
          * True, if logs should be written to the console.
          */
         useConsole: boolean;
+
+        /**
+         * Specifies a log file that should be written to.
+         */
+        useFile: string;
     };
 
     /**
